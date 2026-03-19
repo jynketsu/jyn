@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>jyn</title>
+<meta name="theme-color" content="#ff5a5f">
+<meta name="description" content="jyn elite - programme sèche avec repas, exercices, suivi, streak et rappels.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<style>
+:root{--bg:#0b0f14;--bg2:#121925;--card:#151c26;--card2:#1b2430;--text:#f5f7fb;--muted:#a8b1c1;--accent:#ff5a5f;--accent2:#ff8a5b;--green:#22c55e;--gold:#fbbf24;--border:#2b3543;--shadow:0 10px 30px rgba(0,0,0,.28)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--text);font-family:Arial,Helvetica,sans-serif}
+body{padding:14px}.app{max-width:980px;margin:0 auto}
+.hero,.view,.card,.nav{border:1px solid var(--border);background:var(--card);box-shadow:var(--shadow);border-radius:22px}
+.hero{padding:18px;margin-bottom:14px;background:linear-gradient(135deg,#161d28,#10151d)}
+.heroTop{display:flex;align-items:center;gap:14px}
+.logoTop{width:60px;height:60px;border-radius:18px;overflow:hidden;flex:0 0 auto;border:1px solid var(--border);background:#10161d}
+.logoTop img{width:100%;height:100%;display:block}
+h1,h2,h3,p{margin:0} h1{font-size:30px;line-height:1.05;margin-bottom:6px} h2{font-size:22px;margin-bottom:12px} h3{font-size:18px;margin-bottom:8px}
+.muted{color:var(--muted);line-height:1.45}.small{font-size:13px;color:var(--muted);line-height:1.45}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}.stat{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:12px;text-align:center}.num{font-size:18px;font-weight:700}.lab{font-size:13px;color:var(--muted);margin-top:3px}
+.nav{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;padding:8px;margin-bottom:14px;position:sticky;top:8px;z-index:5;background:rgba(21,28,38,.96);backdrop-filter:blur(10px)}
+.nav button{border:none;border-radius:14px;padding:13px 8px;background:var(--card2);color:var(--text);font-weight:700;font-size:14px;cursor:pointer;border:1px solid var(--border)}
+.nav button.active{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent}
+.view{display:none;padding:16px;margin-bottom:14px}.view.active{display:block}
+.card{padding:14px;margin-bottom:12px}
+.gridMeals{display:grid;grid-template-columns:1fr;gap:12px}
+.mealCard,.exercise{display:grid;grid-template-columns:120px 1fr;gap:12px;background:linear-gradient(180deg,#17202b,#131a23);border:1px solid var(--border);border-radius:20px;padding:12px}
+.mealImage,.exerciseImage{width:100%;aspect-ratio:1/1;border-radius:18px;overflow:hidden;background:#0f141b;border:1px solid var(--border)}
+.mealImage img,.exerciseImage img{width:100%;height:100%;display:block;object-fit:cover}
+ul{margin:8px 0 0;padding-left:18px;line-height:1.55}
+.pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#10161d;border:1px solid #4b2d34;color:#ffd9d9;font-size:12px;margin-top:8px}
+.toprow{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.choiceBtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.choiceBtns button,.ghostBtn{border:none;border-radius:12px;padding:10px 12px;background:var(--card2);color:#fff;font-weight:700;cursor:pointer;border:1px solid var(--border)}
+.choiceBtns button.active{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent}
+.check{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)} .check:last-child{border-bottom:none}
+input[type=checkbox]{transform:scale(1.2);accent-color:var(--green);margin-top:3px}
+progress{width:100%;height:14px}
+.btn{width:100%;border:none;border-radius:14px;padding:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700;cursor:pointer;margin-top:12px}
+#installWrap{margin-top:12px;display:none} #installBtn{width:100%;padding:14px;border:none;border-radius:14px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
+.footer{text-align:center;color:var(--muted);font-size:13px;padding:6px 0 14px}
+.settingRow{display:grid;grid-template-columns:1fr 120px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)} .settingRow:last-child{border-bottom:none}
+select,input[type=number]{width:100%;padding:12px;border-radius:12px;background:var(--card2);border:1px solid var(--border);color:#fff}
+.warning{padding:12px;border-radius:16px;background:#1c232f;border:1px solid #314154;color:#d8e2ef}
+.streakBox{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.streakCard{background:linear-gradient(180deg,#1c2430,#151c26);border:1px solid var(--border);border-radius:18px;padding:14px;text-align:center}
+.streakNum{font-size:28px;font-weight:800;color:var(--gold)}
+@media (max-width:800px){.nav{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:700px){.mealCard,.exercise{grid-template-columns:1fr}.heroTop{align-items:flex-start}.logoTop{width:52px;height:52px} h1{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="hero">
+    <div class="heroTop">
+      <div class="logoTop"><img id="topLogo" alt="Logo jyn"></div>
+      <div>
+        <h1>jyn</h1>
+        <p class="muted">Version ELITE avec logo dans le bandeau, compteur streak, suivi, repas variés, exercices et rappels.</p>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="num">94 kg</div><div class="lab">Poids actuel</div></div>
+      <div class="stat"><div class="num">1m88</div><div class="lab">Taille</div></div>
+      <div class="stat"><div class="num">8 semaines</div><div class="lab">Objectif</div></div>
+      <div class="stat"><div class="num" id="streakStat">0</div><div class="lab">Streak jours</div></div>
+    </div>
+    <div id="installWrap"><button id="installBtn">Installer l’application</button></div>
+  </div>
+
+  <div class="nav">
+    <button class="active" onclick="showView('accueil', this)">Accueil</button>
+    <button onclick="showView('repas', this)">Repas</button>
+    <button onclick="showView('seances', this)">Séances</button>
+    <button onclick="showView('suivi', this)">Suivi</button>
+    <button onclick="showView('rappels', this)">Rappels</button>
+    <button onclick="showView('checklist', this)">Checklist</button>
+  </div>
+
+  <section class="view active" id="accueil">
+    <div class="card">
+      <h2>Résumé rapide</h2>
+      <p class="muted">Objectif : perdre du gras proprement, réduire le ventre, garder du muscle et rester régulier.</p>
+      <div class="pill">Objectif réaliste : -4 à -6 kg en 8 semaines</div>
+    </div>
+    <div class="card">
+      <h3>Compteur streak</h3>
+      <div class="streakBox">
+        <div class="streakCard"><div class="small">Streak actuel</div><div class="streakNum" id="streakCurrent">0</div></div>
+        <div class="streakCard"><div class="small">Meilleur streak</div><div class="streakNum" id="streakBest">0</div></div>
+      </div>
+      <button class="btn" onclick="markDayCompleted()">Valider ma journée</button>
+      <button class="ghostBtn" style="width:100%;margin-top:10px;padding:13px" onclick="resetStreak()">Réinitialiser le streak</button>
+      <p class="small" id="streakMessage" style="margin-top:10px"></p>
+    </div>
+  </section>
+
+  <section class="view" id="repas">
+    <div class="card"><h2>Variétés de repas</h2><p class="muted">Appuie sur les boutons pour afficher d’autres idées.</p></div>
+    <div class="gridMeals">
+      <div class="mealCard"><div class="mealImage"><img id="imgBreakfast" alt="Petit-déjeuner"></div><div><div class="toprow"><div><h3>Petit-déjeuner</h3><div class="small">07h00 à 09h00</div></div><div class="pill">Protéines + énergie</div></div><div id="breakfastContent"></div><div class="choiceBtns" id="breakfastBtns"></div></div></div>
+      <div class="mealCard"><div class="mealImage"><img id="imgLunch" alt="Déjeuner"></div><div><div class="toprow"><div><h3>Déjeuner / midi</h3><div class="small">12h00 à 13h30</div></div><div class="pill">Repas principal</div></div><div id="lunchContent"></div><div class="choiceBtns" id="lunchBtns"></div></div></div>
+      <div class="mealCard"><div class="mealImage"><img id="imgSnack" alt="Collation"></div><div><div class="toprow"><div><h3>Collation 15h</h3><div class="small">15h00 à 16h30</div></div><div class="pill">Anti-craquage</div></div><div id="snackContent"></div><div class="choiceBtns" id="snackBtns"></div></div></div>
+      <div class="mealCard"><div class="mealImage"><img id="imgDinner" alt="Dîner"></div><div><div class="toprow"><div><h3>Dîner</h3><div class="small">19h00 à 21h00</div></div><div class="pill">Léger + digeste</div></div><div id="dinnerContent"></div><div class="choiceBtns" id="dinnerBtns"></div></div></div>
+    </div>
+  </section>
+
+  <section class="view" id="seances">
+    <div class="card"><h2>Séances et exercices</h2><p class="muted">Tu peux varier les séances selon l’énergie et la semaine.</p></div>
+    <div class="exercise"><div class="exerciseImage"><img id="imgWorkout" alt="Séance"></div><div><div class="toprow"><div><h3 id="workoutTitle">Séance A</h3><div class="small" id="workoutMeta"></div></div><div class="pill" id="workoutRest"></div></div><div id="workoutContent"></div><div class="choiceBtns" id="workoutBtns"></div></div></div>
+  </section>
+
+  <section class="view" id="suivi">
+    <div class="card">
+      <h2>Suivi personnel</h2>
+      <div class="settingRow"><div><strong>Poids de départ</strong><div class="small">Exemple : 94</div></div><input id="startWeight" type="number" step="0.1"></div>
+      <div class="settingRow"><div><strong>Poids actuel</strong><div class="small">Mets ton poids de la semaine</div></div><input id="currentWeight" type="number" step="0.1"></div>
+      <div class="settingRow"><div><strong>Objectif</strong><div class="small">Exemple : 89</div></div><input id="goalWeight" type="number" step="0.1"></div>
+      <button class="btn" onclick="saveWeights()">Enregistrer le suivi</button>
+      <p class="small" id="weightSummary" style="margin-top:10px"></p>
+    </div>
+  </section>
+
+  <section class="view" id="rappels">
+    <div class="card">
+      <h2>Notifications rappel eau + sport</h2>
+      <p class="muted">Tu peux activer des rappels pendant que l’app est ouverte ou installée.</p>
+      <div class="warning">Les rappels web sont surtout fiables quand l’app est ouverte. Pour des notifications garanties même app fermée, il faudrait une app Android native.</div>
+      <div class="settingRow"><div><strong>Permission notifications</strong><div class="small">Autorise les notifications</div></div><button class="ghostBtn" onclick="askNotificationPermission()">Autoriser</button></div>
+      <div class="settingRow"><div><strong>Rappel eau</strong><div class="small">Fréquence</div></div><select id="waterInterval"><option value="0">Désactivé</option><option value="30">30 min</option><option value="45">45 min</option><option value="60" selected>60 min</option><option value="90">90 min</option></select></div>
+      <div class="settingRow"><div><strong>Rappel sport</strong><div class="small">Fréquence</div></div><select id="sportInterval"><option value="0">Désactivé</option><option value="180">3h</option><option value="240" selected>4h</option><option value="360">6h</option></select></div>
+      <button class="btn" onclick="saveReminderSettings()">Activer mes rappels</button>
+      <button class="ghostBtn" style="width:100%;margin-top:10px;padding:13px" onclick="testNotification()">Tester une notification</button>
+      <p class="small" id="notifStatus" style="margin-top:10px"></p>
+    </div>
+  </section>
+
+  <section class="view" id="checklist">
+    <div class="card">
+      <h2>Checklist du jour</h2>
+      <label class="check"><input type="checkbox" class="todo"><div>J’ai bu au moins 2 litres d’eau</div></label>
+      <label class="check"><input type="checkbox" class="todo"><div>J’ai évité les sodas et le sucre inutile</div></label>
+      <label class="check"><input type="checkbox" class="todo"><div>J’ai mangé des protéines à mes repas</div></label>
+      <label class="check"><input type="checkbox" class="todo"><div>J’ai marché au moins 8 000 pas</div></label>
+      <label class="check"><input type="checkbox" class="todo"><div>J’ai fait ma séance ou mon cardio</div></label>
+      <p class="small" id="progressText" style="margin-top:10px">Progression du jour : 0%</p>
+      <progress id="bar" value="0" max="100"></progress>
+      <button class="btn" onclick="resetChecklist()">Réinitialiser la journée</button>
+    </div>
+  </section>
+
+  <div class="footer">jyn - version ELITE</div>
+</div>
+
+<script>
+function showView(id, btn){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');btn.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+
+const meals={
+breakfast:[{name:'Option 1',items:['3 œufs ou 2 œufs + 2 blancs','1 tranche de pain complet','1 fruit : pomme ou banane','Café ou thé sans sucre']},{name:'Option 2',items:['200 g de skyr','40 g de flocons d’avoine','1 banane','Cannelle']},{name:'Option 3',items:['Omelette 3 œufs','2 galettes de riz','1 kiwi ou 1 orange','Café sans sucre']},{name:'Option 4',items:['Fromage blanc 0%','Muesli sans sucre','Quelques amandes','1 fruit']}],
+lunch:[{name:'Option 1',items:['150 à 200 g poulet','100 à 150 g riz','Légumes à volonté','1 c. huile d’olive']},{name:'Option 2',items:['180 g steak 5%','Pâtes complètes','Haricots verts','Salade']},{name:'Option 3',items:['Dinde grillée','Patate douce','Brocoli','Yaourt nature']},{name:'Option 4',items:['Saumon','Riz basmati','Courgettes ou poivrons','Eau']}],
+snack:[{name:'Option 1',items:['1 skyr ou fromage blanc','1 café ou thé','Eau']},{name:'Option 2',items:['1 poignée d’amandes','1 pomme','Eau']},{name:'Option 3',items:['1 shaker protéiné','2 galettes de riz','Eau']},{name:'Option 4',items:['Fromage blanc 0%','Quelques fruits rouges','Cannelle']}],
+dinner:[{name:'Option 1',items:['Poisson blanc ou saumon','Beaucoup de légumes','Féculents seulement si faim']},{name:'Option 2',items:['Poulet grillé','Salade composée','Avocat petite portion']},{name:'Option 3',items:['Omelette protéinée','Légumes sautés','Yaourt nature']},{name:'Option 4',items:['Dinde','Brocoli','Riz léger si séance du soir']}]
+};
+const workouts=[{name:'Séance A',meta:'Force + base musculaire',rest:'Repos : 60 à 90 sec',items:['Développé couché : 4 × 8 à 12','Squat : 4 × 8 à 12','Tirage dos : 4 × 8 à 12','Gainage : 3 × 1 min','Cardio : 15 à 20 min']},{name:'Séance B',meta:'Volume + renforcement',rest:'Repos : 45 à 75 sec',items:['Développé épaules : 4 × 10','Fentes : 4 × 10 par jambe','Rowing : 4 × 10','Crunch : 3 séries','Relevés de jambes : 3 séries']},{name:'Séance C',meta:'Jambes + poussée',rest:'Repos : 60 sec',items:['Presse à cuisses : 4 × 10','Développé incliné haltères : 4 × 10','Leg curl : 4 × 12','Dips assistés : 3 × 10','Mollets : 4 × 15']},{name:'Séance D',meta:'Dos + bras + abdos',rest:'Repos : 45 à 60 sec',items:['Tractions assistées ou tirage vertical : 4 × 10','Rowing poulie : 4 × 10','Curl biceps : 3 × 12','Extension triceps : 3 × 12','Planche latérale : 3 × 40 sec']}];
+
+function renderMeal(type,index){const e=meals[type][index];document.getElementById(type+'Content').innerHTML='<ul>'+e.items.map(i=>'<li>'+i+'</li>').join('')+'</ul>';document.querySelectorAll('#'+type+'Btns button').forEach((b,idx)=>b.classList.toggle('active',idx===index));localStorage.setItem('jyn_'+type+'_idx',index);}
+function makeMealButtons(type){const wrap=document.getElementById(type+'Btns');meals[type].forEach((e,idx)=>{const b=document.createElement('button');b.textContent=e.name;b.onclick=()=>renderMeal(type,idx);wrap.appendChild(b);});const saved=parseInt(localStorage.getItem('jyn_'+type+'_idx')||'0',10);renderMeal(type,Math.min(saved,meals[type].length-1));}
+function renderWorkout(index){const w=workouts[index];document.getElementById('workoutTitle').textContent=w.name;document.getElementById('workoutMeta').textContent=w.meta;document.getElementById('workoutRest').textContent=w.rest;document.getElementById('workoutContent').innerHTML='<ul>'+w.items.map(i=>'<li>'+i+'</li>').join('')+'</ul>';document.querySelectorAll('#workoutBtns button').forEach((b,idx)=>b.classList.toggle('active',idx===index));localStorage.setItem('jyn_workout_idx',index);}
+function makeWorkoutButtons(){const wrap=document.getElementById('workoutBtns');workouts.forEach((w,idx)=>{const b=document.createElement('button');b.textContent=w.name;b.onclick=()=>renderWorkout(idx);wrap.appendChild(b);});const saved=parseInt(localStorage.getItem('jyn_workout_idx')||'0',10);renderWorkout(Math.min(saved,workouts.length-1));}
+
+const storageKey='jyn_checklist_elite',boxes=document.querySelectorAll('.todo'),bar=document.getElementById('bar'),progressText=document.getElementById('progressText');
+function updateProgress(){let checked=0,states=[];boxes.forEach(b=>{if(b.checked) checked++;states.push(b.checked)});let pct=Math.round((checked/boxes.length)*100);bar.value=pct;progressText.textContent='Progression du jour : '+pct+'%';try{localStorage.setItem(storageKey,JSON.stringify(states));}catch(e){}}
+function loadChecklist(){try{const saved=JSON.parse(localStorage.getItem(storageKey)||'[]');boxes.forEach((b,i)=>b.checked=!!saved[i]);}catch(e){} updateProgress();}
+function resetChecklist(){boxes.forEach(b=>b.checked=false);updateProgress();} boxes.forEach(b=>{b.addEventListener('change',updateProgress);b.addEventListener('click',updateProgress);});
+
+function saveWeights(){localStorage.setItem('jyn_startWeight',document.getElementById('startWeight').value);localStorage.setItem('jyn_currentWeight',document.getElementById('currentWeight').value);localStorage.setItem('jyn_goalWeight',document.getElementById('goalWeight').value);updateWeightSummary();}
+function loadWeights(){document.getElementById('startWeight').value=localStorage.getItem('jyn_startWeight')||'';document.getElementById('currentWeight').value=localStorage.getItem('jyn_currentWeight')||'';document.getElementById('goalWeight').value=localStorage.getItem('jyn_goalWeight')||'';updateWeightSummary();}
+function updateWeightSummary(){const s=parseFloat(localStorage.getItem('jyn_startWeight')||'');const c=parseFloat(localStorage.getItem('jyn_currentWeight')||'');const g=parseFloat(localStorage.getItem('jyn_goalWeight')||'');let txt='';if(!isNaN(s)&&!isNaN(c)) txt+='Évolution : '+(c-s).toFixed(1)+' kg depuis le départ. ';if(!isNaN(c)&&!isNaN(g)) txt+='Reste à faire : '+(c-g).toFixed(1)+' kg.';document.getElementById('weightSummary').textContent=txt;}
+
+function todayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function loadStreak(){const current=parseInt(localStorage.getItem('jyn_streak_current')||'0',10);const best=parseInt(localStorage.getItem('jyn_streak_best')||'0',10);document.getElementById('streakCurrent').textContent=current;document.getElementById('streakBest').textContent=best;document.getElementById('streakStat').textContent=current;}
+function markDayCompleted(){const last=localStorage.getItem('jyn_streak_last')||'';const today=todayKey();let current=parseInt(localStorage.getItem('jyn_streak_current')||'0',10);let best=parseInt(localStorage.getItem('jyn_streak_best')||'0',10);if(last===today){document.getElementById('streakMessage').textContent='Journée déjà validée aujourd’hui.';loadStreak();return;}const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);const yk=yesterday.getFullYear()+'-'+String(yesterday.getMonth()+1).padStart(2,'0')+'-'+String(yesterday.getDate()).padStart(2,'0');if(last===yk){current+=1;}else{current=1;}if(current>best) best=current;localStorage.setItem('jyn_streak_current',current);localStorage.setItem('jyn_streak_best',best);localStorage.setItem('jyn_streak_last',today);document.getElementById('streakMessage').textContent='Journée validée. Continue comme ça.';loadStreak();}
+function resetStreak(){localStorage.removeItem('jyn_streak_current');localStorage.removeItem('jyn_streak_best');localStorage.removeItem('jyn_streak_last');document.getElementById('streakMessage').textContent='Streak réinitialisé.';loadStreak();}
+
+function askNotificationPermission(){if(!('Notification' in window)){document.getElementById('notifStatus').textContent='Notifications non supportées ici.';return;}Notification.requestPermission().then(p=>{document.getElementById('notifStatus').textContent=(p==='granted'?'Notifications autorisées.':'Notifications non autorisées.');});}
+function notify(title,body){if(!('Notification' in window)) return; if(Notification.permission==='granted'){try{new Notification(title,{body:body,icon:'icons/icon-192.png'});}catch(e){}}}
+let waterTimer=null,sportTimer=null;
+function clearTimers(){if(waterTimer) clearInterval(waterTimer); if(sportTimer) clearInterval(sportTimer); waterTimer=null; sportTimer=null;}
+function saveReminderSettings(){localStorage.setItem('jyn_waterInterval',document.getElementById('waterInterval').value);localStorage.setItem('jyn_sportInterval',document.getElementById('sportInterval').value);startReminderTimers();document.getElementById('notifStatus').textContent='Réglages sauvegardés. Garde l’app ouverte pour des rappels plus fiables.';}
+function loadReminderSettings(){document.getElementById('waterInterval').value=localStorage.getItem('jyn_waterInterval')||'60';document.getElementById('sportInterval').value=localStorage.getItem('jyn_sportInterval')||'240';startReminderTimers();}
+function startReminderTimers(){clearTimers();const water=parseInt(document.getElementById('waterInterval').value||'0',10);const sport=parseInt(document.getElementById('sportInterval').value||'0',10);if(water>0){waterTimer=setInterval(()=>notify('jyn • eau','Pense à boire un verre d’eau maintenant.'),water*60*1000);}if(sport>0){sportTimer=setInterval(()=>notify('jyn • sport','Petit rappel : séance, cardio ou marche aujourd’hui.'),sport*60*1000);}}
+function testNotification(){notify('jyn','Test notification réussi.');document.getElementById('notifStatus').textContent='Notification test envoyée si l’autorisation est acceptée.';}
+
+function svgToDataUri(svg){return 'data:image/svg+xml;utf8,'+encodeURIComponent(svg);}
+const logoSVG='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="110" fill="#151c26"/><rect x="92" y="82" width="328" height="58" rx="24" fill="#ff5a5f"/><rect x="108" y="108" width="296" height="296" rx="70" fill="#10161d"/><text x="256" y="338" text-anchor="middle" font-size="240" font-family="Arial" font-weight="700" fill="white">J</text></svg>';
+const breakfastSVG='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><rect width="300" height="300" rx="28" fill="#1b2430"/><circle cx="150" cy="160" r="90" fill="#f5f1e8"/><ellipse cx="122" cy="150" rx="32" ry="24" fill="#fff"/><circle cx="122" cy="150" r="12" fill="#ffbf3f"/><ellipse cx="180" cy="175" rx="32" ry="24" fill="#fff"/><circle cx="180" cy="175" r="12" fill="#ffbf3f"/></svg>';
+const lunchSVG='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><rect width="300" height="300" rx="28" fill="#111822"/><ellipse cx="150" cy="168" rx="102" ry="70" fill="#ececec"/><path d="M76 116 C108 88, 163 88, 214 117 C231 127, 230 149, 218 164 C210 174, 195 179, 170 181 C127 185, 93 173, 79 153 C67 136, 66 125, 76 116 Z" fill="#d98b42"/></svg>';
+const snackSVG='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><rect width="300" height="300" rx="28" fill="#111822"/><rect x="88" y="78" width="82" height="122" rx="18" fill="#fafafa"/><rect x="88" y="102" width="82" height="98" fill="#d9f1ff"/></svg>';
+const dinnerSVG='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><rect width="300" height="300" rx="28" fill="#111822"/><ellipse cx="150" cy="168" rx="102" ry="70" fill="#ececec"/><path d="M104 148 C132 120, 188 120, 211 150 C223 165, 214 188, 190 195 C162 204, 120 198, 102 178 C91 165, 93 158, 104 148 Z" fill="#ff8a70"/></svg>';
+const workoutSVG='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><rect width="300" height="300" rx="28" fill="#111822"/><rect x="30" y="141" width="240" height="18" rx="9" fill="#c0c7d2"/><circle cx="150" cy="96" r="26" fill="#ffc299"/><rect x="132" y="122" width="36" height="72" rx="16" fill="#4a90e2"/></svg>';
+document.getElementById('topLogo').src=svgToDataUri(logoSVG);document.getElementById('imgBreakfast').src=svgToDataUri(breakfastSVG);document.getElementById('imgLunch').src=svgToDataUri(lunchSVG);document.getElementById('imgSnack').src=svgToDataUri(snackSVG);document.getElementById('imgDinner').src=svgToDataUri(dinnerSVG);document.getElementById('imgWorkout').src=svgToDataUri(workoutSVG);
+
+let deferredPrompt=null;const installWrap=document.getElementById('installWrap'),installBtn=document.getElementById('installBtn');window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;installWrap.style.display='block';});installBtn.addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installWrap.style.display='none';});
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));}
+
+makeMealButtons('breakfast');makeMealButtons('lunch');makeMealButtons('snack');makeMealButtons('dinner');makeWorkoutButtons();loadChecklist();loadWeights();loadReminderSettings();loadStreak();
+</script>
+</body>
+</html>
