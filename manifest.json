@@ -1,12 +1,12 @@
 {
   "name": "jyn",
   "short_name": "jyn",
-  "description": "jyn - programme sèche local",
+  "description": "jyn - suivi de sèche, nutrition et entraînement",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0b0f14",
-  "theme_color": "#0b0f14",
+  "background_color": "#090b10",
+  "theme_color": "#090b10",
   "icons": [
     {
       "src": "icon-192.png",
