@@ -1,1 +1,0 @@
-Upload this ZIP to Tiiny Host. Then open the HTTPS link on Android in Chrome or Brave.
