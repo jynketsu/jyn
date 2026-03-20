@@ -1,1 +1,1 @@
-Version V2 optimisée : images dynamiques locales en SVG, plus rapide, plus fluide. Fichiers à pousser : index.html, manifest.json, sw.js, icon-192.png, icon-512.png
+V3 : humeur du jour, poids du haut synchronisé, jyn sous le logo, animation 🎊 sur sauvegarde, barre sticky plus pro.
