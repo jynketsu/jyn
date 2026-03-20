@@ -1,37 +1,160 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>jyn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-body{margin:0;font-family:Arial;background:#0b0f17;color:white;padding:20px}
-.card{background:#111827;padding:20px;border-radius:16px;margin-bottom:15px}
-button{padding:10px;border-radius:10px;border:none;background:#ff5f66;color:white}
+:root{--bg:#090b10;--bg2:#111723;--panel:rgba(16,22,35,.95);--border:rgba(255,255,255,.08);--text:#f4f7fb;--muted:#9aa6b8;--accent:#ff5f66;--accent2:#ff8b5e;--gold:#f6c453;--success:#21c36f;--shadow:0 16px 40px rgba(0,0,0,.20)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent} html{scroll-behavior:smooth}
+body{margin:0;padding:16px;font-family:'Inter',system-ui,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at top right,rgba(255,95,102,.08),transparent 26%),radial-gradient(circle at top left,rgba(255,139,94,.06),transparent 22%),linear-gradient(180deg,var(--bg),var(--bg2))}
+.app{max-width:1080px;margin:0 auto}
+.hero,.nav-shell,.view,.card,.media-card,.stat{background:var(--panel);border:1px solid var(--border);box-shadow:var(--shadow);backdrop-filter:blur(10px);border-radius:24px}
+.hero{padding:20px;margin-bottom:14px;background:radial-gradient(circle at 15% 15%,rgba(255,95,102,.12),transparent 20%),linear-gradient(135deg,#111827,#0d121c 72%)}
+.hero-top{display:flex;align-items:center;gap:18px}
+.brand-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:92px}
+.brand-logo{width:72px;height:72px;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:#06070a}
+.brand-logo svg{width:100%;height:100%;display:block}
+.brand-name{margin-top:8px;font-size:22px;font-weight:800;letter-spacing:-.03em}
+h2{font-size:22px;line-height:1.15;font-weight:700;letter-spacing:-.02em;margin:0 0 12px} h3{font-size:18px;font-weight:700;letter-spacing:-.01em;margin:0 0 8px} p{margin:0}
+.subhead{color:var(--muted);font-size:15px;line-height:1.55;max-width:760px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+.stat{padding:14px 12px;text-align:center} .stat-value{font-size:20px;font-weight:800} .stat-label{font-size:13px;color:var(--muted);margin-top:4px}
+.mood-box{display:flex;justify-content:center;gap:10px;align-items:center}
+.mood-btn{width:42px;height:42px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,.02);font-size:20px;cursor:pointer;transition:transform .12s ease,background .15s ease,border-color .15s ease}
+.mood-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;transform:translateY(-1px)}
+.nav-shell{position:sticky;top:10px;z-index:20;padding:8px;margin-bottom:14px}
+.nav{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+button{font-family:inherit}
+.nav button,.selector button,.btn,.ghost-btn,.mood-btn{transition:transform .12s ease,box-shadow .15s ease,background .15s ease}
+.nav button{border:none;padding:13px 10px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));color:var(--text);font-size:14px;font-weight:700;border:1px solid var(--border);cursor:pointer}
+.nav button.active{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;box-shadow:0 12px 24px rgba(255,95,102,.16)}
+.nav button:active,.selector button:active,.btn:active,.ghost-btn:active,.mood-btn:active{transform:scale(.985)}
+.view{display:none;padding:16px;margin-bottom:14px;animation:fadeUp .18s ease}
+.view.active{display:block}
+@keyframes fadeUp{from{opacity:.35;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.card{padding:16px;margin-bottom:12px} .lead,.meta{color:var(--muted);line-height:1.6} .meta{font-size:13px;margin-top:4px}
+.tag{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700;color:#ffd7d8;border:1px solid rgba(255,95,102,.18);background:rgba(255,95,102,.05)}
+.media-card{display:grid;grid-template-columns:138px 1fr;gap:14px;padding:14px;margin-bottom:12px;overflow:hidden}
+.media-thumb{width:100%;aspect-ratio:1/1;overflow:hidden;border-radius:18px;background:#0c1017;border:1px solid var(--border)} .media-thumb img{width:100%;height:100%;display:block;object-fit:cover}
+.media-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start} .chip{padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700;color:#ffe0d1;border:1px solid rgba(255,139,94,.16);background:rgba(255,139,94,.08);white-space:nowrap}
+ul{margin:10px 0 0;padding-left:18px;line-height:1.6}
+.selector{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px} .selector button{border:none;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.02);color:var(--text);border:1px solid var(--border);font-weight:700;font-size:13px;cursor:pointer} .selector button.active{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent}
+.streak-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px} .streak-card{border-radius:18px;border:1px solid var(--border);background:linear-gradient(180deg,#141c2b,#101725);padding:16px;text-align:center} .streak-label{font-size:14px;color:var(--muted)} .streak-value{font-size:32px;font-weight:800;color:var(--gold);margin-top:8px}
+.btn{width:100%;padding:14px 16px;border:none;border-radius:16px;color:#fff;font-size:15px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 14px 28px rgba(255,95,102,.16);margin-top:12px;cursor:pointer;position:relative;overflow:hidden}
+.btn.success-pop::after{content:"🎊";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;animation:pop .75s ease forwards;background:rgba(255,255,255,.06)}
+@keyframes pop{0%{opacity:0;transform:scale(.4)}15%{opacity:1;transform:scale(1.1)}100%{opacity:0;transform:scale(1.35)}}
+.ghost-btn{width:100%;padding:13px 16px;border-radius:16px;color:var(--text);font-size:14px;font-weight:700;background:rgba(255,255,255,.02);border:1px solid var(--border);margin-top:10px;cursor:pointer}
+.form-row{display:grid;grid-template-columns:1fr 140px;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.06)} .form-row:last-child{border-bottom:none}
+input[type=number]{width:100%;padding:13px 14px;border-radius:14px;border:1px solid var(--border);background:#151d2c;color:var(--text);font:inherit;outline:none;transition:border-color .18s ease,box-shadow .18s ease} input[type=number]:focus{border-color:rgba(255,95,102,.45);box-shadow:0 0 0 4px rgba(255,95,102,.08)}
+.checklist-grid{display:grid;gap:12px} .check-item{display:flex;gap:12px;align-items:center;padding:14px;border-radius:18px;border:1px solid rgba(255,255,255,.06);background:linear-gradient(180deg,#151d2c,#111725);transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease} .check-item.done{border-color:rgba(33,195,111,.45);box-shadow:0 10px 24px rgba(33,195,111,.10);transform:translateY(-1px)} .check-item .emoji{font-size:24px;width:34px;text-align:center} .check-item .txt strong{display:block;font-size:15px} .check-item .txt span{display:block;color:var(--muted);font-size:13px;margin-top:2px} .check-item input{transform:scale(1.2);accent-color:var(--success);margin-left:auto}
+.objectif-box{margin-top:14px;padding:16px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(135deg,rgba(33,195,111,.12),rgba(246,196,83,.10));display:none;align-items:center;gap:12px} .objectif-box.show{display:flex;animation:fadeUp .24s ease} .objectif-box .badge{font-size:28px}
+.progress-wrap{margin-top:12px}
+.footer{padding:6px 0 14px;text-align:center;color:var(--muted);font-size:13px}
+@media (max-width:920px){.stats{grid-template-columns:repeat(2,1fr)}.nav{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:720px){body{padding:12px}.hero-top{align-items:flex-start}.brand-logo{width:60px;height:60px}.brand-name{font-size:20px}.media-card{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
+<div class="app">
+<header class="hero">
+<div class="hero-top">
+<div class="brand-wrap"><div class="brand-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="110" fill="#10151d"/>
+<path d="M366 99L344 134L305 171L264 205L212 243L170 274L199 230L259 186L312 143L355 108Z" fill="#f5f7fa"/>
+<path d="M282 213L254 228L220 248L182 270L220 243L258 219Z" fill="#f5f7fa"/>
+<path d="M198 221L174 240L153 259L137 282L130 306L130 324L134 341L141 354L148 361L146 339L151 320L166 298L184 281L210 260L243 236L279 212L311 197L301 195L266 206L240 218L218 227Z" fill="#f5f7fa"/>
+<path d="M355 214L336 239L308 268L275 298L244 323L216 347L189 369L167 387L151 401L135 416L168 398L202 367L243 333L289 295L328 259L353 225Z" fill="#f5f7fa"/>
+<path d="M239 258L275 255L257 284L292 280L274 312L248 340L258 309L232 314L254 281Z" fill="#f5f7fa"/>
+<path d="M313 303L294 319L272 336L252 351L278 338L304 320L328 299Z" fill="#f5f7fa"/>
+</svg></div><div class="brand-name">jyn</div></div>
+<div><p class="subhead">Plateforme personnelle de suivi de sèche : nutrition structurée, programmation d’entraînement, suivi de progression et routine quotidienne centralisés dans une interface claire et professionnelle.</p></div>
+</div>
+<div class="stats">
+<div class="stat"><div class="stat-value" id="topCurrentWeight">94 kg</div><div class="stat-label">Poids actuel</div></div>
+<div class="stat"><div class="stat-value">1m88</div><div class="stat-label">Taille</div></div>
+<div class="stat"><div class="mood-box"><button class="mood-btn" data-mood="good">😊</button><button class="mood-btn" data-mood="mid">😐</button><button class="mood-btn" data-mood="bad">☹️</button></div><div class="stat-label">Humeur du jour</div></div>
+<div class="stat"><div class="stat-value" id="streakStat">0</div><div class="stat-label">Streak actif</div></div>
+</div>
+</header>
 
-<h1>jyn</h1>
+<div class="nav-shell"><nav class="nav">
+<button class="active" onclick="showView('dashboard', this)">Tableau de bord</button>
+<button onclick="showView('nutrition', this)">Nutrition</button>
+<button onclick="showView('training', this)">Entraînement</button>
+<button onclick="showView('progress', this)">Progression</button>
+</nav></div>
 
-<div class="card">
-<h2>Checklist quotidienne</h2>
-<label><input type="checkbox"> Hydratation</label><br>
-<label><input type="checkbox"> Nutrition OK</label><br>
-<label><input type="checkbox"> Protéines OK</label><br>
-<label><input type="checkbox"> Pas OK</label><br>
-<label><input type="checkbox"> Entraînement OK</label><br>
+<section class="view active" id="dashboard">
+<div class="card"><h2>Vue d’ensemble</h2><p class="lead">Objectif principal : réduire le taux de masse grasse, améliorer la définition visuelle et conserver une base musculaire solide sur une période de huit semaines.</p><div class="tag">Checklist intégrée à l’accueil</div></div>
+<div class="card"><h2>Checklist quotidienne</h2>
+<div class="checklist-grid">
+<label class="check-item"><div class="emoji">💧</div><div class="txt"><strong>Hydratation validée</strong><span>2 à 3 litres consommés dans la journée.</span></div><input type="checkbox" class="todo"></label>
+<label class="check-item"><div class="emoji">🍭</div><div class="txt"><strong>Contrôle du sucre</strong><span>Aucun excès ou grignotage non prévu.</span></div><input type="checkbox" class="todo"></label>
+<label class="check-item"><div class="emoji">🍗</div><div class="txt"><strong>Apports protéiques</strong><span>Protéines respectées sur les repas clés.</span></div><input type="checkbox" class="todo"></label>
+<label class="check-item"><div class="emoji">🚶</div><div class="txt"><strong>Objectif de pas</strong><span>8 000 à 10 000 pas atteints.</span></div><input type="checkbox" class="todo"></label>
+<label class="check-item"><div class="emoji">🏋️</div><div class="txt"><strong>Session du jour</strong><span>Séance, cardio ou récupération active effectuée.</span></div><input type="checkbox" class="todo"></label>
+</div>
+<div class="progress-wrap"><p class="meta" id="progressText">Progression du jour : 0%</p><progress id="bar" value="0" max="100"></progress></div>
+<div class="objectif-box" id="goalBox"><div class="badge">✅</div><div><strong>Objectif atteint</strong><div class="meta">Toutes les actions du jour ont été validées. Excellente discipline.</div></div></div>
+</div>
+<div class="card"><h2>Discipline quotidienne</h2><ul><li>Quatre séances hebdomadaires lorsque le planning le permet.</li><li>Hydratation cible comprise entre 2 et 3 litres par jour.</li><li>Apport protéique présent à chaque repas principal.</li><li>Objectif quotidien de 8 000 à 10 000 pas.</li><li>Réduction maximale des sucres industriels et des grignotages non planifiés.</li></ul></div>
+<div class="card"><h2>Streak de régularité</h2><div class="streak-grid"><div class="streak-card"><div class="streak-label">Série actuelle</div><div class="streak-value" id="streakCurrent">0</div></div><div class="streak-card"><div class="streak-label">Meilleure série</div><div class="streak-value" id="streakBest">0</div></div></div><button class="btn" onclick="markDayCompleted()">Valider la journée</button><button class="ghost-btn" onclick="resetStreak()">Réinitialiser la série</button><p class="meta" id="streakMessage"></p></div>
+</section>
+
+<section class="view" id="nutrition">
+<div class="card"><h2>Plan nutritionnel</h2><p class="lead">Chaque bloc propose plusieurs options interchangeables pour conserver une alimentation propre, variée et soutenable au quotidien.</p></div>
+<div class="media-card"><div class="media-thumb"><img id="breakfastImage" alt="Petit-déjeuner"></div><div><div class="media-top"><div><h3>Petit-déjeuner</h3><div class="meta">Fenêtre recommandée : 07h00 – 09h00</div></div><div class="chip">Protéines + énergie stable</div></div><div id="breakfastContent"></div><div class="selector" id="breakfastBtns"></div></div></div>
+<div class="media-card"><div class="media-thumb"><img id="lunchImage" alt="Déjeuner"></div><div><div class="media-top"><div><h3>Déjeuner</h3><div class="meta">Fenêtre recommandée : 12h00 – 13h30</div></div><div class="chip">Repas central</div></div><div id="lunchContent"></div><div class="selector" id="lunchBtns"></div></div></div>
+<div class="media-card"><div class="media-thumb"><img id="snackImage" alt="Collation"></div><div><div class="media-top"><div><h3>Collation</h3><div class="meta">Fenêtre recommandée : 15h00 – 16h30</div></div><div class="chip">Contrôle des fringales</div></div><div id="snackContent"></div><div class="selector" id="snackBtns"></div></div></div>
+<div class="media-card"><div class="media-thumb"><img id="dinnerImage" alt="Dîner"></div><div><div class="media-top"><div><h3>Dîner</h3><div class="meta">Fenêtre recommandée : 19h00 – 21h00</div></div><div class="chip">Léger + digeste</div></div><div id="dinnerContent"></div><div class="selector" id="dinnerBtns"></div></div></div>
+</section>
+
+<section class="view" id="training">
+<div class="card"><h2>Programmation d’entraînement</h2><p class="lead">Organisation par séances modulables afin d’adapter l’intensité à l’énergie du jour, tout en conservant une logique de progression.</p></div>
+<div class="media-card"><div class="media-thumb"><img id="workoutImage" alt="Entraînement"></div><div><div class="media-top"><div><h3 id="workoutTitle">Séance A</h3><div class="meta" id="workoutMeta"></div></div><div class="chip" id="workoutRest"></div></div><div id="workoutContent"></div><div class="selector" id="workoutBtns"></div></div></div>
+</section>
+
+<section class="view" id="progress">
+<div class="card"><h2>Suivi de progression</h2><p class="lead">Renseigne tes repères personnels afin de mesurer l’évolution de façon simple et lisible.</p>
+<div class="form-row"><div><h3>Poids de départ</h3><div class="meta">Valeur de référence initiale</div></div><input id="startWeight" type="number" step="0.1"></div>
+<div class="form-row"><div><h3>Poids actuel</h3><div class="meta">Mise à jour hebdomadaire recommandée</div></div><input id="currentWeight" type="number" step="0.1"></div>
+<div class="form-row"><div><h3>Objectif cible</h3><div class="meta">Poids visé en fin de cycle</div></div><input id="goalWeight" type="number" step="0.1"></div>
+<button class="btn" id="saveBtn" onclick="saveWeights()">Enregistrer les données</button><p class="meta" id="weightSummary"></p></div>
+</section>
+
+<div class="footer">jyn — accueil + checklist</div>
 </div>
 
-<div class="card">
-<h2>Nutrition</h2>
-<p>Poulet + riz + légumes</p>
-</div>
+<script>
+const mealVisuals = {"breakfast": ["<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' rx='28' fill='#121a24'/><circle cx='200' cy='215' r='122' fill='#f5f1e9'/><ellipse cx='160' cy='200' rx='44' ry='32' fill='#fff'/><circle cx='160' cy='200' r='17' fill='#ffbf3d'/></svg>", "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' rx='28' fill='#121a24'/><rect x='98' y='88' width='118' height='170' rx='24' fill='#fafafa'/><text x='157' y='196' text-anchor='middle' fill='#607080' font-size='34' font-family='Arial'>SKYR</text></svg>", "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' rx='28' fill='#121a24'/><circle cx='198' cy='210' r='126' fill='#f5d574'/><circle cx='315' cy='100' r='42' fill='#7dcf5f'/></svg>"], "lunch": ["<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' rx='28' fill='#121a24'/><ellipse cx='200' cy='218' rx='136' ry='95' fill='#f1f1f1'/><path d='M102 180c46-40 128-42 191 2 34 24 44 59 18 80-23 20-82 31-138 23-45-6-87-26-96-55-7-20 2-37 25-50Z' fill='#d89249'/></svg>", "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' rx='28' fill='#121a24'/><ellipse cx='200' cy='218' rx='136' ry='95' fill='#f1f1f1'/><path d='M97 173c39-30 101-37 156-17 50 18 89 58 72 88-18 33-90 48-162 33-57-12-101-43-96-76 2-12 11-20 30-28Z' fill='#b65540'/></svg>", "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' rx='28' fill='#121a24'/><ellipse cx='200' cy='218' rx='136' ry='95' fill='#f1f1f1'/><path d='M92 182c44-31 114-40 178-15 46 18 71 59 49 89-16 22-57 34-105 33-73-2-145-31-148-72-1-15 7-25 26-35Z' fill='#e8a35f'/></svg>"], "snack": ["<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' rx='28' fill='#121a24'/><rect x='116' y='90' width='130' height='170' rx='24' fill='#fafafa'/><text x='181' y='196' text-anchor='middle' fill='#607080' font-size='34' font-family='Arial'>SKYR</text></svg>", "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' rx='28' fill='#121a24'/><ellipse cx='152' cy='235' rx='80' ry='50' fill='#8b5e3c'/><circle cx='295' cy='210' r='52' fill='#ffd24f'/></svg>", "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' rx='28' fill='#121a24'/><rect x='80' y='88' width='86' height='210' rx='18' fill='#e7eef6'/><rect x='80' y='88' width='86' height='40' rx='18' fill='#111827'/><text x='123' y='115' text-anchor='middle' fill='#fff' font-size='18' font-family='Arial'>WHEY</text></svg>"], "dinner": ["<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' rx='28' fill='#121a24'/><ellipse cx='200' cy='215' rx='136' ry='95' fill='#f1f1f1'/><path d='M102 183c52-34 149-39 198 4 27 24 21 54-12 76-39 25-117 31-179 10-62-21-81-56-7-90Z' fill='#ff8f6d'/></svg>", "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' rx='28' fill='#121a24'/><ellipse cx='200' cy='215' rx='136' ry='95' fill='#f1f1f1'/><path d='M109 184c45-31 118-39 180-18 53 18 74 54 55 81-17 24-63 38-118 36-65-2-127-27-139-59-6-15 1-28 22-40Z' fill='#d08b4b'/></svg>", "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' rx='28' fill='#121a24'/><circle cx='200' cy='214' r='126' fill='#f3d36c'/><ellipse cx='178' cy='209' rx='48' ry='36' fill='#f7c656'/></svg>"]};
+const workoutVisuals = ["<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' rx='28' fill='#121a24'/><rect x='60' y='190' width='280' height='20' rx='10' fill='#c8d0da'/><circle cx='200' cy='124' r='30' fill='#ffc7a0'/><rect x='176' y='154' width='48' height='88' rx='18' fill='#4a8cff'/></svg>", "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' rx='28' fill='#121a24'/><circle cx='146' cy='108' r='28' fill='#ffc7a0'/><rect x='122' y='138' width='48' height='92' rx='18' fill='#2db6c7'/></svg>", "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' rx='28' fill='#121a24'/><rect x='70' y='255' width='260' height='34' rx='14' fill='#6b7585'/><circle cx='160' cy='124' r='28' fill='#ffc7a0'/><rect x='136' y='154' width='48' height='88' rx='18' fill='#4a8cff'/></svg>"];
+const meals={breakfast:[{name:'Option 1',items:['3 œufs entiers ou 2 œufs + 2 blancs','1 tranche de pain complet','1 fruit frais : pomme ou banane','Café ou thé sans sucre']},{name:'Option 2',items:['200 g de skyr','40 g de flocons d’avoine','1 banane','Cannelle']},{name:'Option 3',items:['Omelette 3 œufs','2 galettes de riz','1 kiwi ou 1 orange','Boisson chaude sans sucre']}],lunch:[{name:'Option 1',items:['150 à 200 g de poulet','100 à 150 g de riz','Légumes à volonté','1 cuillère d’huile d’olive']},{name:'Option 2',items:['180 g de steak 5%','Pâtes complètes','Haricots verts','Salade verte']},{name:'Option 3',items:['Dinde grillée','Patate douce','Brocoli vapeur','Yaourt nature']}],snack:[{name:'Option 1',items:['1 skyr ou fromage blanc','Boisson chaude sans sucre','Eau']},{name:'Option 2',items:['1 poignée d’amandes','1 pomme','Eau']},{name:'Option 3',items:['1 shaker protéiné','2 galettes de riz','Eau']}],dinner:[{name:'Option 1',items:['Poisson blanc ou saumon','Grande portion de légumes','Féculents uniquement si faim élevée']},{name:'Option 2',items:['Poulet grillé','Salade composée','Petite portion d’avocat']},{name:'Option 3',items:['Omelette protéinée','Légumes sautés','Yaourt nature']}]};
+const workouts=[{name:'Séance A',meta:'Force / base musculaire',rest:'Repos 60 à 90 s',items:['Développé couché : 4 × 8 à 12','Squat : 4 × 8 à 12','Tirage dos : 4 × 8 à 12','Gainage : 3 × 1 min','Cardio : 15 à 20 min']},{name:'Séance B',meta:'Volume / renforcement',rest:'Repos 45 à 75 s',items:['Développé épaules : 4 × 10','Fentes : 4 × 10 / jambe','Rowing : 4 × 10','Crunch : 3 séries','Relevés de jambes : 3 séries']},{name:'Séance C',meta:'Jambes / poussée',rest:'Repos 60 s',items:['Presse à cuisses : 4 × 10','Développé incliné haltères : 4 × 10','Leg curl : 4 × 12','Dips assistés : 3 × 10','Mollets : 4 × 15']}];
 
-<div class="card">
-<h2>Entraînement</h2>
-<p>Séance A</p>
-</div>
-
+function showView(id,btn){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');btn.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function svgData(svg){return 'data:image/svg+xml;utf8,'+encodeURIComponent(svg);}
+function renderMeal(type,index){const item=meals[type][index];document.getElementById(type+'Content').innerHTML='<ul>'+item.items.map(v=>'<li>'+v+'</li>').join('')+'</ul>';document.getElementById(type+'Image').src=svgData(mealVisuals[type][index]);document.querySelectorAll('#'+type+'Btns button').forEach((b,idx)=>b.classList.toggle('active',idx===index));localStorage.setItem('jyn_'+type+'_idx',index);}
+function buildMealButtons(type){const wrap=document.getElementById(type+'Btns');meals[type].forEach((item,idx)=>{const btn=document.createElement('button');btn.textContent=item.name;btn.onclick=()=>renderMeal(type,idx);wrap.appendChild(btn);});const saved=parseInt(localStorage.getItem('jyn_'+type+'_idx')||'0',10);renderMeal(type,Math.min(saved,meals[type].length-1));}
+function renderWorkout(index){const item=workouts[index];document.getElementById('workoutTitle').textContent=item.name;document.getElementById('workoutMeta').textContent=item.meta;document.getElementById('workoutRest').textContent=item.rest;document.getElementById('workoutContent').innerHTML='<ul>'+item.items.map(v=>'<li>'+v+'</li>').join('')+'</ul>';document.getElementById('workoutImage').src=svgData(workoutVisuals[index]);document.querySelectorAll('#workoutBtns button').forEach((b,idx)=>b.classList.toggle('active',idx===index));localStorage.setItem('jyn_workout_idx',index);}
+function buildWorkoutButtons(){const wrap=document.getElementById('workoutBtns');workouts.forEach((item,idx)=>{const btn=document.createElement('button');btn.textContent=item.name;btn.onclick=()=>renderWorkout(idx);wrap.appendChild(btn);});const saved=parseInt(localStorage.getItem('jyn_workout_idx')||'0',10);renderWorkout(Math.min(saved,workouts.length-1));}
+const checklistKey='jyn_checklist_home',boxes=document.querySelectorAll('.todo'),bar=document.getElementById('bar'),progressText=document.getElementById('progressText'),goalBox=document.getElementById('goalBox'),checkItems=document.querySelectorAll('.check-item');
+function updateProgress(){let checked=0;const states=[];boxes.forEach((b,i)=>{if(b.checked)checked++;states.push(b.checked);checkItems[i].classList.toggle('done',b.checked)});const pct=Math.round((checked/boxes.length)*100);bar.value=pct;progressText.textContent='Progression du jour : '+pct+'%';localStorage.setItem(checklistKey,JSON.stringify(states));goalBox.classList.toggle('show',checked===boxes.length);}
+function loadChecklist(){try{const saved=JSON.parse(localStorage.getItem(checklistKey)||'[]');boxes.forEach((b,i)=>b.checked=!!saved[i]);}catch(e){}updateProgress();}
+boxes.forEach(b=>{b.addEventListener('change',updateProgress);b.addEventListener('click',updateProgress);});
+function saveWeights(){localStorage.setItem('jyn_startWeight',document.getElementById('startWeight').value);localStorage.setItem('jyn_currentWeight',document.getElementById('currentWeight').value);localStorage.setItem('jyn_goalWeight',document.getElementById('goalWeight').value);updateWeightSummary();const btn=document.getElementById('saveBtn');btn.classList.remove('success-pop');void btn.offsetWidth;btn.classList.add('success-pop');setTimeout(()=>btn.classList.remove('success-pop'),800);}
+function loadWeights(){document.getElementById('startWeight').value=localStorage.getItem('jyn_startWeight')||'';document.getElementById('currentWeight').value=localStorage.getItem('jyn_currentWeight')||'';document.getElementById('goalWeight').value=localStorage.getItem('jyn_goalWeight')||'';updateWeightSummary();}
+function updateWeightSummary(){const start=parseFloat(localStorage.getItem('jyn_startWeight')||'');const current=parseFloat(localStorage.getItem('jyn_currentWeight')||'');const goal=parseFloat(localStorage.getItem('jyn_goalWeight')||'');let msg='';if(!isNaN(start)&&!isNaN(current))msg+='Évolution depuis le départ : '+(current-start).toFixed(1)+' kg. ';if(!isNaN(current)&&!isNaN(goal))msg+='Écart restant jusqu’à l’objectif : '+(current-goal).toFixed(1)+' kg.';document.getElementById('weightSummary').textContent=msg;document.getElementById('topCurrentWeight').textContent=!isNaN(current)?(current.toFixed(1).replace('.0','')+' kg'):'94 kg';}
+function todayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function loadStreak(){const current=parseInt(localStorage.getItem('jyn_streak_current')||'0',10);const best=parseInt(localStorage.getItem('jyn_streak_best')||'0',10);document.getElementById('streakCurrent').textContent=current;document.getElementById('streakBest').textContent=best;document.getElementById('streakStat').textContent=current;}
+function markDayCompleted(){const last=localStorage.getItem('jyn_streak_last')||'';const today=todayKey();let current=parseInt(localStorage.getItem('jyn_streak_current')||'0',10);let best=parseInt(localStorage.getItem('jyn_streak_best')||'0',10);if(last===today){document.getElementById('streakMessage').textContent='La journée a déjà été validée aujourd’hui.';loadStreak();return;}const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);const yk=yesterday.getFullYear()+'-'+String(yesterday.getMonth()+1).padStart(2,'0')+'-'+String(yesterday.getDate()).padStart(2,'0');current=(last===yk)?current+1:1;if(current>best)best=current;localStorage.setItem('jyn_streak_current',current);localStorage.setItem('jyn_streak_best',best);localStorage.setItem('jyn_streak_last',today);document.getElementById('streakMessage').textContent='Journée validée avec succès.';loadStreak();}
+function resetStreak(){localStorage.removeItem('jyn_streak_current');localStorage.removeItem('jyn_streak_best');localStorage.removeItem('jyn_streak_last');document.getElementById('streakMessage').textContent='La série a été réinitialisée.';loadStreak();}
+const moodButtons=document.querySelectorAll('.mood-btn');function loadMood(){const saved=localStorage.getItem('jyn_mood')||'good';moodButtons.forEach(btn=>btn.classList.toggle('active',btn.dataset.mood===saved));} moodButtons.forEach(btn=>btn.addEventListener('click',()=>{localStorage.setItem('jyn_mood',btn.dataset.mood);loadMood();}));
+buildMealButtons('breakfast');buildMealButtons('lunch');buildMealButtons('snack');buildMealButtons('dinner');buildWorkoutButtons();loadChecklist();loadWeights();loadStreak();loadMood();
+</script>
 </body>
 </html>
