@@ -1,1 +1,1 @@
-V3 : humeur du jour, poids du haut synchronisé, jyn sous le logo, animation 🎊 sur sauvegarde, barre sticky plus pro.
+V4 Ultra Premium : checklist vivante, badge Objectif atteint, animations de clic, sticky nav premium, humeur du jour, poids synchronisé.
